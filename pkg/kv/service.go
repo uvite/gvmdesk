@@ -3,12 +3,14 @@ package kv
 import (
 	"github.com/benbjohnson/clock"
 	"github.com/influxdata/influxdb/v2"
-	"github.com/influxdata/influxdb/v2/kit/platform"
+	"github.com/uvite/gvmdesk/pkg/platform"
+	"github.com/uvite/gvmdesk/pkg/snowflake"
+
 	"github.com/influxdata/influxdb/v2/query/fluxlang"
 	"github.com/influxdata/influxdb/v2/rand"
 	"github.com/influxdata/influxdb/v2/resource"
 	"github.com/influxdata/influxdb/v2/resource/noop"
-	"github.com/influxdata/influxdb/v2/snowflake"
+
 	"go.uber.org/zap"
 )
 

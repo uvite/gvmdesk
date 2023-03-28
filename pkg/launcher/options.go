@@ -8,15 +8,16 @@ import (
 	"github.com/influxdata/influxdb/v2/vault"
 	"github.com/spf13/viper"
 	"path/filepath"
+	"time"
 )
 
 // InfluxdOpts captures all arguments for running the InfluxDB server.
 type InfluxdOpts struct {
-	AssetsPath string
-	BoltPath   string
-	SqLitePath string
-	EnginePath string
-	TracingType       string
+	AssetsPath  string
+	BoltPath    string
+	SqLitePath  string
+	EnginePath  string
+	TracingType string
 	StoreType   string
 	SecretStore string
 	VaultConfig vault.Config
@@ -27,6 +28,12 @@ type InfluxdOpts struct {
 	Viper *viper.Viper
 
 	HardeningEnabled bool
+
+	HttpBindAddress       string
+	HttpReadHeaderTimeout time.Duration
+	HttpReadTimeout       time.Duration
+	HttpWriteTimeout      time.Duration
+	HttpIdleTimeout       time.Duration
 }
 
 // NewOpts constructs options with default values.
@@ -47,5 +54,6 @@ func NewOpts() *InfluxdOpts {
 		StoreType:        DiskStore,
 		SecretStore:      BoltStore,
 		HardeningEnabled: false,
+		HttpBindAddress:  ":8888",
 	}
 }

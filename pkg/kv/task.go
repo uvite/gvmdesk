@@ -3,17 +3,14 @@ package kv
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	taskmodel "github.com/uvite/gvmdesk/pkg/model"
 	"strings"
 	"time"
 
 	"github.com/influxdata/influxdb/v2"
-	icontext "github.com/influxdata/influxdb/v2/context"
-	"github.com/influxdata/influxdb/v2/kit/platform"
-	"github.com/influxdata/influxdb/v2/resource"
-	"github.com/influxdata/influxdb/v2/task/options"
+
+	"github.com/uvite/gvmdesk/pkg/platform"
 )
 
 // Task Storage Schema
@@ -183,16 +180,6 @@ func (s *Service) findTaskByID(ctx context.Context, tx Tx, id platform.ID, basic
 // FindTasks returns a list of tasks that match a filter (limit 100) and the total count
 // of matching tasks.
 func (s *Service) FindTasks(ctx context.Context, filter taskmodel.TaskFilter) ([]*taskmodel.Task, int, error) {
-	if filter.Organization != "" {
-		org, err := s.orgs.FindOrganization(ctx, influxdb.OrganizationFilter{
-			Name: &filter.Organization,
-		})
-		if err != nil {
-			return nil, 0, err
-		}
-
-		filter.OrganizationID = &org.ID
-	}
 
 	var ts []*taskmodel.Task
 	err := s.kv.View(ctx, func(tx Tx) error {
@@ -224,22 +211,6 @@ func (s *Service) findTasks(ctx context.Context, tx Tx, filter taskmodel.TaskFil
 
 	// if no user or organization is passed, assume contexts auth is the user we are looking for.
 	// it is possible for a  internal system to call this with no auth so we shouldnt fail if no auth is found.
-	if filter.OrganizationID == nil && filter.User == nil {
-		userAuth, err := icontext.GetAuthorizer(ctx)
-		if err == nil {
-			userID := userAuth.GetUserID()
-			if userID.Valid() {
-				filter.User = &userID
-			}
-		}
-	}
-
-	// filter by user id.
-	if filter.User != nil {
-		return s.findTasksByUser(ctx, tx, filter)
-	} else if filter.OrganizationID != nil {
-		return s.findTasksByOrg(ctx, tx, *filter.OrganizationID, filter)
-	}
 
 	return s.findAllTasks(ctx, tx, filter)
 }
@@ -483,25 +454,13 @@ func (s *Service) findAllTasks(ctx context.Context, tx Tx, filter taskmodel.Task
 // CreateTask creates a new task.
 // The owner of the task is inferred from the authorizer associated with ctx.
 func (s *Service) CreateTask(ctx context.Context, tc taskmodel.TaskCreate) (*taskmodel.Task, error) {
-	var orgFilter influxdb.OrganizationFilter
-
-	if tc.Organization != "" {
-		orgFilter.Name = &tc.Organization
-	} else if tc.OrganizationID.Valid() {
-		orgFilter.ID = &tc.OrganizationID
-
-	} else {
-		return nil, errors.New("organization required")
-	}
-
-	org, err := s.orgs.FindOrganization(ctx, orgFilter)
-	if err != nil {
-		return nil, err
-	}
 
 	var t *taskmodel.Task
-	err = s.kv.Update(ctx, func(tx Tx) error {
-		task, err := s.createTask(ctx, tx, org, tc)
+	err := s.kv.Update(ctx, func(tx Tx) error {
+
+		fmt.Println("[222]", tc)
+		task, err := s.createTask(ctx, tx, tc)
+		fmt.Println("[3333]", err)
 		if err != nil {
 			return err
 		}
@@ -512,17 +471,12 @@ func (s *Service) CreateTask(ctx context.Context, tc taskmodel.TaskCreate) (*tas
 	return t, err
 }
 
-func (s *Service) createTask(ctx context.Context, tx Tx, org *influxdb.Organization, tc taskmodel.TaskCreate) (*taskmodel.Task, error) {
+func (s *Service) createTask(ctx context.Context, tx Tx, tc taskmodel.TaskCreate) (*taskmodel.Task, error) {
 	// TODO: Uncomment this once the checks/notifications no longer create tasks in kv
 	// confirm the owner is a real user.
 	// if _, err = s.findUserByID(ctx, tx, tc.OwnerID); err != nil {
 	// 	return nil, influxdb.ErrInvalidOwnerID
 	// }
-
-	opts, err := options.FromScriptAST(s.FluxLanguageService, tc.Flux)
-	if err != nil {
-		return nil, taskmodel.ErrTaskOptionParse(err)
-	}
 
 	if tc.Status == "" {
 		tc.Status = string(taskmodel.TaskActive)
@@ -530,81 +484,74 @@ func (s *Service) createTask(ctx context.Context, tx Tx, org *influxdb.Organizat
 
 	createdAt := s.clock.Now().Truncate(time.Second).UTC()
 	task := &taskmodel.Task{
-		ID:              s.IDGenerator.ID(),
-		Type:            tc.Type,
-		OrganizationID:  org.ID,
-		Organization:    org.Name,
-		OwnerID:         tc.OwnerID,
-		Metadata:        tc.Metadata,
-		Name:            opts.Name,
-		Description:     tc.Description,
-		Status:          tc.Status,
-		Flux:            tc.Flux,
-		Every:           opts.Every.String(),
-		Cron:            opts.Cron,
+		ID:   s.IDGenerator.ID(),
+		Type: tc.Type,
+
+		OwnerID:  tc.OwnerID,
+		Metadata: tc.Metadata,
+
+		Description: tc.Description,
+		Status:      tc.Status,
+		Flux:        tc.Flux,
+
 		CreatedAt:       createdAt,
 		LatestCompleted: createdAt,
 		LatestScheduled: createdAt,
 	}
-
-	if opts.Offset != nil {
-		off, err := time.ParseDuration(opts.Offset.String())
-		if err != nil {
-			return nil, taskmodel.ErrTaskTimeParse(err)
-		}
-		task.Offset = off
-
-	}
-
+	fmt.Println("[555]", 444)
 	taskBucket, err := tx.Bucket(taskBucket)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
-
+	fmt.Println("[66]", 444)
 	indexBucket, err := tx.Bucket(taskIndexBucket)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
+	fmt.Println("[77]", 444)
 
+	fmt.Printf("%+v", task)
 	taskBytes, err := json.Marshal(task)
+	fmt.Println("[77]33", err)
 	if err != nil {
 		return nil, taskmodel.ErrInternalTaskServiceError(err)
 	}
-
+	fmt.Println("[8877]", 444)
 	taskKey, err := taskKey(task.ID)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("[88]", 444)
 	orgKey, err := taskOrgKey(task.OrganizationID, task.ID)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("[8]", 444)
 
 	// write the task
 	err = taskBucket.Put(taskKey, taskBytes)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
-
+	fmt.Println("[99]", 444)
 	// write the org index
 	err = indexBucket.Put(orgKey, taskKey)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
 
-	uid, _ := icontext.GetUserID(ctx)
-	if err := s.audit.Log(resource.Change{
-		Type:           resource.Create,
-		ResourceID:     task.ID,
-		ResourceType:   influxdb.TasksResourceType,
-		OrganizationID: task.OrganizationID,
-		UserID:         uid,
-		ResourceBody:   taskBytes,
-		Time:           time.Now(),
-	}); err != nil {
-		return nil, err
-	}
+	//uid, _ := icontext.GetUserID(ctx)
+	//if err := s.audit.Log(resource.Change{
+	//	Type:           resource.Create,
+	//	ResourceID:     task.ID,
+	//	ResourceType:   influxdb.TasksResourceType,
+	//	OrganizationID: task.OrganizationID,
+	//	UserID:         uid,
+	//	ResourceBody:   taskBytes,
+	//	Time:           time.Now(),
+	//}); err != nil {
+	//	return nil, err
+	//}
 
 	return task, nil
 }
@@ -751,18 +698,18 @@ func (s *Service) updateTask(ctx context.Context, tx Tx, id platform.ID, upd tas
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
 
-	uid, _ := icontext.GetUserID(ctx)
-	if err := s.audit.Log(resource.Change{
-		Type:           resource.Update,
-		ResourceID:     task.ID,
-		ResourceType:   influxdb.TasksResourceType,
-		OrganizationID: task.OrganizationID,
-		UserID:         uid,
-		ResourceBody:   taskBytes,
-		Time:           time.Now(),
-	}); err != nil {
-		return nil, err
-	}
+	//uid, _ := icontext.GetUserID(ctx)
+	//if err := s.audit.Log(resource.Change{
+	//	Type:           resource.Update,
+	//	ResourceID:     task.ID,
+	//	ResourceType:   influxdb.TasksResourceType,
+	//	OrganizationID: task.OrganizationID,
+	//	UserID:         uid,
+	//	ResourceBody:   taskBytes,
+	//	Time:           time.Now(),
+	//}); err != nil {
+	//	return nil, err
+	//}
 
 	return task, nil
 }
@@ -851,15 +798,16 @@ func (s *Service) deleteTask(ctx context.Context, tx Tx, id platform.ID) error {
 		return taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
 
-	uid, _ := icontext.GetUserID(ctx)
-	return s.audit.Log(resource.Change{
-		Type:           resource.Delete,
-		ResourceID:     task.GetID(),
-		ResourceType:   influxdb.TasksResourceType,
-		OrganizationID: task.GetOrgID(),
-		UserID:         uid,
-		Time:           time.Now(),
-	})
+	return nil
+	//uid, _ := icontext.GetUserID(ctx)
+	//return s.audit.Log(resource.Change{
+	//	Type:           resource.Delete,
+	//	ResourceID:     task.GetID(),
+	//	ResourceType:   influxdb.TasksResourceType,
+	//	OrganizationID: task.GetOrgID(),
+	//	UserID:         uid,
+	//	Time:           time.Now(),
+	//})
 }
 
 // FindLogs returns logs for a run.

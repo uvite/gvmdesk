@@ -5,22 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00db47bb-2a62-4514-a863-43f082f9d8d2" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/Taskfile.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/.env.local" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/bbgo.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/dev/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/dev/model/taskmodel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/dev/task.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/dev/task/quene.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/nusdb/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/task/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adev/task/pkg-config.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/alert.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/bot.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/kline.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/note.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/update.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adev/task/readme.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/api/online/base.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/api/online/bots.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/api/online/exchange.js" afterDir="false" />
@@ -42,110 +27,28 @@
       <change afterPath="$PROJECT_DIR$/frontend/src/views/strategies/code/utils/helpers.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/views/strategies/code/utils/index.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/views/strategies/code/utils/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/accout.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/exchange.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/kline.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/order.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/postions.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gvmbot/trades.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/1.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/2.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/3.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/4.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/adev/1.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/adev/socket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/cancel.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/closeLong.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/entry.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/exit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/getAccount.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/limit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/lrc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/openLong.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/postion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/resetStopPrice.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/start.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/stop.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/sync.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/local-data/fuck/1.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/local-data/fuck/2.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/local-data/未命名.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/bbolt.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/bbolt_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/id.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/id_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/kv.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/kv_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/metrics.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/bolt/metrics_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/encode.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/errors.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/store.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/store_base.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/store_index.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/task.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/kv/variable.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/launcher/fs.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/launcher/launcher.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/launcher/options.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/launcher/storage.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/model/task.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/model/task_errors.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/task/task.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/error.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/error_bucket.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/error_org.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/error_urm.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/error_user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/service_bucket.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/storage.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tenant/storage_bucket.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/alert.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/fileSeedTracker.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/helpers.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/bandwidthma.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/file.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/fileListing.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/fileTranfser.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/filestatusevent.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/topic.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/models/topicPermissions.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/mutexes/mutexes.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/crossplatform.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/dialogs_darwin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/dialogs_linux.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/dialogs_windows.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/events_darwin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/events_linux.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/events_windows.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/foldersShared.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/folders_darwin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/folders_linux.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/folders_windows.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/handleStartup_darwin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/handleStartup_linux.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/handleStartup_windows.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/notifications_darwin.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/notifications_linux.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/platform/notifications_windows.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/sorter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/authorizer/task.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/authorizer/task_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/feature/feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/feature/flag.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/feature/list.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/feature/middleware.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/api_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/authentication_middleware.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/client.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/debug.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/platform_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/proxy_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/ready.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/task_service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/tokens.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/http/write_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/launcher/http.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tenant/http_server_bucket.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/configs/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/configs/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/clipboard.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/clipboard.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/cmd.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/cmd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/configs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/md.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/md.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/ocr.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ocr.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/runtime.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/todo.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/todo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/trans.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/trans.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.vue" afterDir="false" />
@@ -312,11 +215,9 @@
       <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/ali.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/ali.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/domain.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/domain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xorm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/oss.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/oss.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/launcher/launcher.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/launcher/launcher.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/launcher/options.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/launcher/options.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/modules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/modules.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,11 +260,12 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.vendoring.notification.had.been.shown": "true",
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/leven/hein/gvmdesk/pkg",
+    "last_opened_file_path": "/Users/leven/hein/gvmdesk/pkg/utils",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.intellij.profiler.configurations.ui.EditProfilerConfigurationsComponent",
     "ts.external.directory.path": "/Users/leven/hein/gvmdesk/frontend/node_modules/typescript/lib"
@@ -371,13 +273,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pkg/utils" />
       <recent name="$PROJECT_DIR$/pkg" />
-      <recent name="$PROJECT_DIR$/pkg/tenant" />
-      <recent name="$PROJECT_DIR$/pkg/kv" />
-      <recent name="$PROJECT_DIR$/adev/task" />
+      <recent name="$PROJECT_DIR$/pkg/snowflake" />
       <recent name="$PROJECT_DIR$/pkg/launcher" />
+      <recent name="$PROJECT_DIR$/pkg/feature" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pkg/feature" />
       <recent name="$PROJECT_DIR$/pkg/task" />
     </key>
   </component>

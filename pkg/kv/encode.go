@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/influxdata/influxdb/v2/kit/platform"
+	"github.com/uvite/gvmdesk/pkg/platform"
 )
 
 // EncodeFn returns an encoding when called. Closures are your friend here.

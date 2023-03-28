@@ -3,9 +3,13 @@ package launcher
 import (
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/influxdata/influxdb/v2/http"
 	"github.com/uvite/gvmdesk/pkg/bolt"
 
-	"github.com/influxdata/influxdb/v2/http"
+	taskmodel "github.com/uvite/gvmdesk/pkg/model"
+	nethttp "net/http"
+	"time"
 
 	"github.com/influxdata/influxdb/v2/kit/feature"
 
@@ -21,8 +25,6 @@ import (
 	"github.com/influxdata/influxdb/v2/snowflake"
 	"github.com/influxdata/influxdb/v2/sqlite"
 	"github.com/influxdata/influxdb/v2/task/backend/scheduler"
-	"github.com/influxdata/influxdb/v2/task/taskmodel"
-
 	"github.com/uvite/gvmdesk/pkg/task"
 	"path/filepath"
 	"strings"
@@ -73,6 +75,12 @@ type Launcher struct {
 	executor *task.Executor
 	reg      *prom.Registry
 	log      *zap.Logger
+
+	httpPort int
+
+
+
+	TSC  taskmodel.TaskService
 }
 
 type stoppingScheduler interface {
@@ -142,6 +150,7 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 	serviceConfig := kv.ServiceConfig{
 		FluxLanguageService: fluxlang.DefaultService,
 	}
+	//bucketHTTPServer := ts.NewBucketHTTPHandler(m.log, labelSvc)
 
 	m.kvService = kv.NewService(m.log.With(zap.String("store", "kv")), m.kvStore, ts, serviceConfig)
 
@@ -165,7 +174,21 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 		}
 		m.executor = executor
 	}
-	fmt.Println(taskSvc)
+	m.TSC=taskSvc
+
+
+	//errorHandler := kithttp.NewErrorHandler(m.log.With(zap.String("handler", "error_logger")))
+	Router := gin.Default()
+	Router.GET("/", func(c *gin.Context) {
+		time.Sleep(5 * time.Second)
+		c.String(nethttp.StatusOK, "Welcome Gin Server")
+	})
+
+
+	if err := m.runHTTP(opts, Router); err != nil {
+		return err
+	}
+
 	return nil
 }
 

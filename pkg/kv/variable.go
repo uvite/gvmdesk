@@ -3,11 +3,12 @@ package kv
 import (
 	"context"
 	"encoding/json"
+
+	influxdb "github.com/uvite/gvmdesk/pkg/utils"
 	"strings"
 
-	"github.com/influxdata/influxdb/v2"
-	"github.com/influxdata/influxdb/v2/kit/platform"
-	"github.com/influxdata/influxdb/v2/kit/platform/errors"
+	"github.com/uvite/gvmdesk/pkg/platform"
+	"github.com/uvite/gvmdesk/pkg/platform/errors"
 )
 
 var (
@@ -106,9 +107,6 @@ func newVariableStore() *IndexStore {
 }
 
 func (s *Service) findVariables(ctx context.Context, tx Tx, filter influxdb.VariableFilter, opt ...influxdb.FindOptions) ([]*influxdb.Variable, error) {
-	if filter.OrganizationID != nil {
-		return s.findOrganizationVariables(ctx, tx, *filter.OrganizationID)
-	}
 
 	var o influxdb.FindOptions
 	if len(opt) > 0 {
@@ -154,16 +152,7 @@ func filterVariablesFn(filter influxdb.VariableFilter) func([]byte, interface{})
 
 // FindVariables returns all variables in the store
 func (s *Service) FindVariables(ctx context.Context, filter influxdb.VariableFilter, opt ...influxdb.FindOptions) ([]*influxdb.Variable, error) {
-	if filter.Organization != nil {
-		o, err := s.orgs.FindOrganization(ctx, influxdb.OrganizationFilter{
-			Name: filter.Organization,
-		})
-		if err != nil {
-			return nil, err
-		}
 
-		filter.OrganizationID = &o.ID
-	}
 
 	res := []*influxdb.Variable{}
 	err := s.kv.View(ctx, func(tx Tx) error {

@@ -5,11 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/uvite/gvmdesk/pkg/platform"
 	"strconv"
 	"time"
 
-
-	"github.com/influxdata/influxdb/v2/kit/platform"
 
 	"github.com/influxdata/influxdb/v2/task/options"
 )
@@ -33,12 +32,11 @@ var (
 
 // Task is a task. 🎊
 type Task struct {
-	ID   platform.ID `json:"id"`
-	Type string      `json:"type,omitempty"`
-	OrganizationID  platform.ID            `json:"orgID"`
-	Organization    string                 `json:"org"`
-
-	OwnerID         platform.ID            `json:"ownerID"`
+	ID             platform.ID `json:"id"`
+	Type           string      `json:"type,omitempty"`
+	OrganizationID platform.ID `json:"orgID"`
+	Organization   string      `json:"org"`
+	OwnerID        platform.ID `json:"ownerID"`
 
 	Name        string `json:"name"`
 	Description string `json:"description,omitempty"`
@@ -158,14 +156,14 @@ type TaskCreate struct {
 }
 
 func (t TaskCreate) Validate() error {
-	switch {
-	case t.Flux == "":
-		return errors.New("missing flux")
-	case !t.OrganizationID.Valid() && t.Organization == "":
-		return errors.New("missing orgID and org")
-	case t.Status != "" && t.Status != TaskStatusActive && t.Status != TaskStatusInactive:
-		return fmt.Errorf("invalid task status: %q", t.Status)
-	}
+	//switch {
+	//case t.Flux == "":
+	//	return errors.New("missing flux")
+	//case !t.OrganizationID.Valid() && t.Organization == "":
+	//	return errors.New("missing orgID and org")
+	//case t.Status != "" && t.Status != TaskStatusActive && t.Status != TaskStatusInactive:
+	//	return fmt.Errorf("invalid task status: %q", t.Status)
+	//}
 	return nil
 }
 

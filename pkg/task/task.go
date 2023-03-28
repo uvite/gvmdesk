@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/influxdata/flux"
-	"github.com/influxdata/influxdb/v2/kit/platform"
+	"github.com/uvite/gvmdesk/pkg/platform"
+
 	"github.com/influxdata/influxdb/v2/kit/tracing"
 	"github.com/influxdata/influxdb/v2/query"
 	taskmodel "github.com/uvite/gvmdesk/pkg/model"
@@ -163,6 +164,8 @@ func (e *Executor) processScheduledTasks() {
 }
 func (e *Executor) LoadExistingScheduleRuns(ctx context.Context) error {
 	tasks, _, err := e.ts.FindTasks(ctx, taskmodel.TaskFilter{})
+
+	fmt.Println("{task}", len(tasks))
 	if err != nil {
 		e.log.Error("err finding tasks:", zap.Error(err))
 		return err
