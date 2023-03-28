@@ -3,6 +3,21 @@ package internal
 import "time"
 
 // 待办事项表
+type AlertItem struct {
+	Id       int64     `json:"id"`
+	Title    string    `json:"title" xorm:"varchar(100) default('') notnull"`      // 标题
+	Content  string    `json:"content" xorm:"varchar(1024) default('') "`   // 内容
+	Path     string    `json:"path" xorm:"varchar(1024) default('') "`      // 内容
+	Symbol   string    `json:"symbol" xorm:"varchar(200) default('') notnull"`     // 标签
+	Interval string    `json:"interval" xorm:"varchar(200) default('1m') notnull"` // 标签
+	Status   bool    `json:"status" xorm:"default(0) notnull "`   // 标签
+	Date     time.Time `json:"date" xorm:"created"`                                // 日期
+	Repeat   int8      `json:"repeat" xorm:"default(1) notnull"`                   // 重复次数
+	Expired  time.Time `json:"expired" xorm:"created"`                             // 事项到期时间
+	Updated  time.Time `json:"updated" xorm:"updated"`                             // 更新时间
+}
+
+// 待办事项表
 type TodoItem struct {
 	Id         int64     `json:"id"`
 	Title      string    `json:"title" xorm:"varchar(100) default('') notnull"`    // 标题

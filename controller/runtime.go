@@ -1,9 +1,8 @@
 package gtools
 
 import (
-	"gtools/configs"
-	"gtools/util"
-
+	"github.com/uvite/gvmdesk/configs"
+	"github.com/uvite/gvmdesk/util"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -14,7 +13,7 @@ func (a *App) OpenMdSaveFileWindow() *util.Resp {
 		Filters:              [](runtime.FileFilter){configs.MdFilter},
 		CanCreateDirectories: true,
 	}
-	fpath, err := runtime.SaveFileDialog(a.ctx, option)
+	fpath, err := runtime.SaveFileDialog(a.Ctx, option)
 	if err != nil {
 		a.Log.Error("新markdown路径获取失败")
 		return util.Error("新markdown路径获取失败")
@@ -27,7 +26,7 @@ func (a *App) OpenMdFolderWindow() *util.Resp {
 		Title:                "选择文件夹",
 		CanCreateDirectories: true,
 	}
-	dirPath, err := runtime.OpenDirectoryDialog(a.ctx, options)
+	dirPath, err := runtime.OpenDirectoryDialog(a.Ctx, options)
 	if err != nil {
 		return util.Error(err.Error())
 	}
@@ -41,7 +40,7 @@ func (a *App) OpenHtmlSaveWindow() *util.Resp {
 		Filters:              [](runtime.FileFilter){configs.HtmlFilter},
 		CanCreateDirectories: true,
 	}
-	fpath, err := runtime.SaveFileDialog(a.ctx, options)
+	fpath, err := runtime.SaveFileDialog(a.Ctx, options)
 	if err != nil {
 		return util.Error(err.Error())
 	}

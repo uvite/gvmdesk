@@ -33,7 +33,7 @@ var (
 
 // Mac webkit路径
 var (
-	WebkitPath = "%s/Library/Caches/com.wails.GTools/WebKit"
+	WebkitPath = "%s/Library/Caches/com.wails.gvm/WebKit"
 )
 
 // 百度相关地址

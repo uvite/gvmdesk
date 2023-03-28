@@ -2,7 +2,7 @@ package util
 
 import (
 	"fmt"
-	"gtools/configs"
+	"github.com/uvite/gvmdesk/configs"
 	"os"
 	"strings"
 

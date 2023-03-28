@@ -3,7 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
-	gtools "gtools/controller"
+	gtools "github.com/uvite/gvmdesk/controller"
 	"net/http"
 	"os"
 	"strings"
@@ -44,14 +44,14 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:             "GTools", // 标题
-		Width:             1100,     // 启动宽度
-		Height:            768,      // 启动高度
-		MinWidth:          1100,     // 最小宽度
-		MinHeight:         768,      // 最小高度
-		HideWindowOnClose: true,     // 关闭的时候隐藏窗口
-		StartHidden:       true,    // 启动的时候隐藏窗口 （建议生产环境关闭此项，开发环境开启此项，原因自己体会）
-		AlwaysOnTop:       false,    // 窗口固定在最顶层
+		Title:             "Gvm", // 标题
+		Width:             1100,  // 启动宽度
+		Height:            768,   // 启动高度
+		MinWidth:          1100,  // 最小宽度
+		MinHeight:         768,   // 最小高度
+		HideWindowOnClose: true,  // 关闭的时候隐藏窗口
+		StartHidden:       false, // 启动的时候隐藏窗口 （建议生产环境关闭此项，开发环境开启此项，原因自己体会）
+		AlwaysOnTop:       false, // 窗口固定在最顶层
 		AssetServer: &assetserver.Options{
 			Assets:  assets,
 			Handler: NewFileLoader(),
@@ -78,8 +78,8 @@ func main() {
 			WebviewIsTransparent: false,
 			WindowIsTranslucent:  false,
 			About: &mac.AboutInfo{
-				Title:   "GTools",
-				Message: "© 2022 Pixiao",
+				Title:   "机器人报警",
+				Message: "© 2023 Gvm",
 				Icon:    icon,
 			},
 		},

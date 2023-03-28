@@ -2,9 +2,9 @@ package gtools
 
 import (
 	"fmt"
-	"gtools/configs"
-	"gtools/internal"
-	"gtools/util"
+	"github.com/uvite/gvmdesk/configs"
+	"github.com/uvite/gvmdesk/internal"
+	"github.com/uvite/gvmdesk/util"
 	"math"
 )
 

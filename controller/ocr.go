@@ -4,16 +4,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"gtools/configs"
-	"gtools/internal"
-	"gtools/util"
-	"io"
-	"net/http"
-	"net/url"
-	"os"
-	"strings"
+"github.com/uvite/gvmdesk/configs"
+"github.com/uvite/gvmdesk/internal"
+"github.com/uvite/gvmdesk/util"
+"io"
+"net/http"
+"net/url"
+"os"
+"strings"
 )
-
 type bdOcrAccessToken struct {
 	Token   string `json:"refresh_token"`
 	Expires int32  `json:"expires_in"`
@@ -73,9 +72,9 @@ func (a *App) GetBdOCRToken() (bool, string) {
 		return false, err.Error()
 	}
 	a.ConfigMap["bdocr"]["token"] = newToken.Access
-	a.UpdateConfigItem(internal.ConfigItem {
-		Name: "token",
-		Type: "bdocr",
+	a.UpdateConfigItem(internal.ConfigItem{
+		Name:  "token",
+		Type:  "bdocr",
 		Value: newToken.Access,
 	})
 	a.ConfigMap = a.GetConfigMap()
@@ -96,7 +95,7 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 
 	var accessToken = a.ConfigMap["bdocr"]["token"]
 	if accessToken == "" {
-		ok, token := a.GetBdOCRToken(); 
+		ok, token := a.GetBdOCRToken()
 		if !ok {
 			return util.Error(accessToken)
 		} else {
@@ -151,7 +150,7 @@ func (a *App) BaiduOCR(ocrType int8) *util.Resp {
 		a.Log.Error(configs.BdOcrResponseErr, err.Error())
 		return util.Error(err.Error())
 	}
-	resultJson := bdOcrResult{} 
+	resultJson := bdOcrResult{}
 	json.Unmarshal(result, &resultJson)
 	wordsList := resultJson.Words
 	var content = ""

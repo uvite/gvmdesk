@@ -3,9 +3,9 @@ package gtools
 import (
 	"bufio"
 	"fmt"
-	"gtools/configs"
-	"gtools/internal"
-	"gtools/util"
+	"github.com/uvite/gvmdesk/configs"
+	"github.com/uvite/gvmdesk/internal"
+	"github.com/uvite/gvmdesk/util"
 	"io/fs"
 	"os"
 	"strings"
@@ -144,7 +144,7 @@ func (a *App) AddMdFile() *util.Resp {
 		Filters:              [](runtime.FileFilter){configs.MdFilter},
 		CanCreateDirectories: true,
 	}
-	path, err := runtime.OpenFileDialog(a.ctx, options)
+	path, err := runtime.OpenFileDialog(a.Ctx, options)
 	if err != nil {
 		return util.Error(err.Error())
 	}

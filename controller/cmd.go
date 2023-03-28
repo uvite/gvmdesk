@@ -1,11 +1,12 @@
 package gtools
 
 import (
-	"gtools/util"
 	"fmt"
-	"gtools/configs"
-	"gtools/internal"
+	"github.com/uvite/gvmdesk/configs"
+	"github.com/uvite/gvmdesk/internal"
+	"github.com/uvite/gvmdesk/util"
 	"os/exec"
+
 )
 
 func (a *App) AddCmdItem(item internal.CmdItem) *util.Resp {

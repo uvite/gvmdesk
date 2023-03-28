@@ -2,13 +2,12 @@ package gtools
 
 import (
 	"fmt"
-	"gtools/configs"
-	"gtools/internal"
-	"gtools/util"
-	"os"
-	"os/user"
+"github.com/uvite/gvmdesk/configs"
+"github.com/uvite/gvmdesk/internal"
+"github.com/uvite/gvmdesk/util"
+"os"
+"os/user"
 )
-
 type updatParam struct {
 	Type  string            `json:"type"`
 	Value map[string]string `json:"value"`

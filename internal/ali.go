@@ -2,7 +2,7 @@ package internal
 
 import (
 	"fmt"
-	"gtools/configs"
+	"github.com/uvite/gvmdesk/configs"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/sirupsen/logrus"

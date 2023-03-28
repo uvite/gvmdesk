@@ -5,18 +5,17 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"gtools/configs"
-	"gtools/util"
-	"io"
-	"net/http"
-	"strings"
+"github.com/uvite/gvmdesk/configs"
+"github.com/uvite/gvmdesk/util"
+"io"
+"net/http"
+"strings"
 
-	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
-	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
-	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
-	tmt "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tmt/v20180321"
+"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
+"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
+"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
+tmt "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tmt/v20180321"
 )
-
 type BdTransResult struct {
 	From        string      `json:"from"`
 	To          string      `json:"to"`
@@ -67,7 +66,7 @@ func (a *App) BaiDuTrans(query string) *util.Resp {
 	return util.Success(resultStr)
 }
 
-func (a *App)TxTrans() {
+func (a *App) TxTrans() {
 	// 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey,此处还需注意密钥对的保密
 	// 密钥可前往https://console.cloud.tencent.com/cam/capi网站进行获取
 	credential := common.NewCredential(

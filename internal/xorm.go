@@ -27,6 +27,6 @@ func NewXormEngine(dbPath string) *xorm.Engine {
 	engine.SetMaxIdleConns(5)
 	engine.SetMaxOpenConns(10)
 	engine.SetMapper(names.GonicMapper{}) // 名称映射规则 驼峰式
-	engine.Sync2(new(TodoItem), new(MdPath), new(CmdItem), new(ConfigItem))
+	engine.Sync2(new(TodoItem), new(AlertItem), new(MdPath), new(CmdItem), new(ConfigItem))
 	return engine
 }

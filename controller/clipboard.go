@@ -2,13 +2,13 @@ package gtools
 
 import (
 	"fmt"
-	"gtools/configs"
-	"gtools/util"
-	"os"
-	"strconv"
-	"time"
+"github.com/uvite/gvmdesk/configs"
+"github.com/uvite/gvmdesk/util"
+"os"
+"strconv"
+"time"
 
-	"golang.design/x/clipboard"
+"golang.design/x/clipboard"
 )
 
 func (a *App) UploadScreenshot() *util.Resp {
