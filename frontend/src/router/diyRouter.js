@@ -19,7 +19,7 @@ const routes = [
         children: [
             {
                 name: 'code',
-                path: '/strategies/code',
+                path: '/strategies',
                 meta: {
                     title: '策略源码',
                     icon: 'icon-dashboard',

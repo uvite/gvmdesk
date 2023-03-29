@@ -30,7 +30,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 		data["symbol"] = "ETHUSDT"
 		data["interval"] = "1m"
 		data["path"] = string("/hein/gvmdesk/js/4.js")
-		task, err := m.kvService.CreateTask(c, taskmodel.TaskCreate{
+		task, err := m.KvService.CreateTask(c, taskmodel.TaskCreate{
 			OrganizationID: platform.ID(Org.ID),
 			OwnerID:        platform.ID(Org.ID),
 			Status:         string(taskmodel.TaskActive),
@@ -51,7 +51,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 		id := c.Query("id")
 
 		pid, _ := platform.IDFromString(id)
-		task, err := m.kvService.FindTaskByID(c, *pid)
+		task, err := m.KvService.FindTaskByID(c, *pid)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -67,7 +67,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 		id := c.Query("id")
 
 		pid, _ := platform.IDFromString(id)
-		err := m.executor.Close(c, *pid)
+		err := m.Executor.Close(c, *pid)
 		fmt.Println(err)
 		if err != nil {
 			FailWithMessage("获取失败", c)
@@ -80,7 +80,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 		id := c.Query("id")
 
 		pid, _ := platform.IDFromString(id)
-		err := m.executor.Cancel(c, *pid)
+		err := m.Executor.Cancel(c, *pid)
 		fmt.Println(err)
 		if err != nil {
 			FailWithMessage("获取失败", c)
@@ -95,7 +95,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 		data["symbol"] = symbol
 		data["interval"] = "1m"
 		data["path"] = string("/hein/gvmdesk/js/4.js")
-		task, err := m.kvService.CreateTask(c, taskmodel.TaskCreate{
+		task, err := m.KvService.CreateTask(c, taskmodel.TaskCreate{
 			OrganizationID: platform.ID(Org.ID),
 			OwnerID:        platform.ID(Org.ID),
 			Status:         string(taskmodel.TaskActive),
@@ -107,7 +107,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 			fmt.Println(err)
 		}
 
-		promise, err := m.executor.PromisedExecute(c, task.ID)
+		promise, err := m.Executor.PromisedExecute(c, task.ID)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -120,7 +120,7 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 
 	router.GET("/api/all", func(c *gin.Context) {
 		filter := taskmodel.TaskFilter{}
-		task, total, err := m.kvService.FindTasks(c, filter)
+		task, total, err := m.KvService.FindTasks(c, filter)
 		if err != nil {
 			fmt.Println(err)
 		}

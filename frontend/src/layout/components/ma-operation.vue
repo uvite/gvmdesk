@@ -1,22 +1,9 @@
 <template>
   <div class="mr-2 flex justify-end lg:justify-between w-full lg:w-auto">
+
+
     <a-space class="mr-0 lg:mr-5" size="medium">
 
-      <!-- <a-tooltip :content="$t('sys.search')">
-        <a-button :shape="'circle'" class="hidden lg:inline">
-          <template #icon>
-            <icon-search />
-          </template>
-        </a-button>
-      </a-tooltip> -->
-
-      <!-- <a-tooltip content="锁屏">
-        <a-button :shape="'circle'" class="hidden lg:inline">
-          <template #icon>
-            <icon-lock />
-          </template>
-        </a-button>
-      </a-tooltip> -->
 
       <a-tooltip :content="isFullScreen ? $t('sys.closeFullScreen') : $t('sys.fullScreen')">
         <a-button :shape="'circle'" class="hidden lg:inline" @click="screen">
@@ -56,26 +43,7 @@
       </a-tooltip>
 
     </a-space>
-    <a-dropdown @select="handleSelect" trigger="hover">
 
-      <a-avatar class="bg-blue-500 text-3xl avatar" style="top: -1px;">
-        <img
-          :src="(userStore.user && userStore.user.avatar) ? userStore.user.avatar : '/avatar.jpg'"
-        />
-      </a-avatar>
-
-      <template #content>
-        <a-doption value="userCenter"><icon-user /> {{ $t('sys.userCenter') }}</a-doption>
-        <a-doption value="clearCache"><icon-delete /> {{ $t('sys.clearCache') }}</a-doption>
-        <a-divider style="margin: 5px 0" />
-        <a-doption value="logout"><icon-poweroff /> {{ $t('sys.logout') }}</a-doption>
-      </template>
-    </a-dropdown>
-
-    <a-modal v-model:visible="showLogoutModal" @ok="handleLogout" @cancel="handleLogoutCancel">
-      <template #title>{{ $t('sys.logoutAlert') }}</template>
-      <div>{{ $t('sys.logoutMessage') }}</div>
-    </a-modal>
 
     <Setting ref="setting" />
 
@@ -84,7 +52,7 @@
 
 
 <script setup>
-  import { ref } from 'vue'
+import {reactive, ref} from 'vue'
   import { useAppStore, useUserStore, useMessageStore } from '@/store'
   import tool from '@/utils/tool'
   import Setting from './components/setting.vue'

@@ -1,15 +1,18 @@
 
 <template>
+
   <a-layout-content class="layout flex justify-between">
-    <div id="layout-columns-left-panel" class="layout-columns-left-panel hidden lg:flex justify-between">
-      <ma-columns-menu />
-    </div>
+
 
     <div class="layout-columns-right-panel flex flex-col" :style="`width: calc(100% - ${containerWidth}px)`" >
-
       <ma-columns-header />
+
       <ma-worker-area />
 
+    </div>
+
+    <div id="layout-columns-left-panel" class="layout-columns-left-panel hidden lg:flex justify-between">
+      <ma-columns-menu />
     </div>
   </a-layout-content>
 </template>

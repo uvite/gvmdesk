@@ -125,9 +125,9 @@ func (a *App) GetDirs() RespDate {
 func (a *App) CreateNoteFile(dirName string) RespDate {
 	pwd, _ := os.Getwd()
 	// 未命名.md文件路径
-	defaultFile := filepath.Join(pwd, "local-data", "未命名.md")
+	defaultFile := filepath.Join(pwd, "local-data", "test.js")
 	newFileName := time.Now().Local().Format("20060102150405")
-	destFilePath := filepath.Join(pwd, "local-data", dirName, (newFileName + ".md"))
+	destFilePath := filepath.Join(pwd, "local-data", dirName, (newFileName))
 	// 判断文件是否存在
 	_, err := os.Stat(defaultFile)
 	if err == nil { // 文件存在
@@ -188,7 +188,7 @@ func (a *App) SaveNote(dirName, noteName, noteTitle, noteContent string) RespDat
 // 读取文件
 func (a *App) ReadNoteFile(dirName, fileName string) RespDate {
 	pwd, _ := os.Getwd()
-	filePath := filepath.Join(pwd, "local-data", dirName, (fileName + ".md"))
+	filePath := filepath.Join(pwd, "local-data", dirName, (fileName))
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return RespDate{Code: 500, Msg: err.Error()}

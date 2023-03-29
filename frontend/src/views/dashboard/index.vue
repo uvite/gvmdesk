@@ -1,7 +1,7 @@
 
 <template>
   <a-layout-content class="flex flex-col">
-    <statistics   />
+    <WorkPanel   />
 
   </a-layout-content>
 </template>

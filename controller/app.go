@@ -8,6 +8,7 @@ import (
 	"github.com/uvite/gvmdesk/configs"
 	"github.com/uvite/gvmdesk/gvmbot"
 	"github.com/uvite/gvmdesk/internal"
+	"github.com/uvite/gvmdesk/pkg/launcher"
 	"github.com/uvite/gvmdesk/util"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
@@ -24,6 +25,7 @@ type App struct {
 	ConfigMap map[string]map[string]string
 	AliOSS    *oss.Client
 	Exchange  *gvmbot.Exchange
+	Launcher *launcher.Launcher
 }
 
 // NewApp 创建一个新的 App 应用程序结构体
@@ -57,6 +59,8 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.initClipboard()
 
 	a.InitExchange()
+
+	a.InitLauncher()
 }
 
 // OnBeforeClose

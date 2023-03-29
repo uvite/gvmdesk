@@ -14,21 +14,19 @@
       <a-form-item field="name" label="策略文件">
         <a-input v-model="form.path"/>
       </a-form-item>
-
     </a-form>
   </a-modal>
   <a-table :data="data" style="margin-top: 30px">
     <template #columns>
 
-      <a-table-column title="Salary" data-index="metadata.title"></a-table-column>
-      <a-table-column title="Address" data-index="metadata.symbol"></a-table-column>
-      <a-table-column title="Email" data-index="metadata.interval"></a-table-column>
-      <a-table-column title="Email" data-index="metadata.path"></a-table-column>
-      <a-table-column title="Email" data-index="metadata.status"></a-table-column>
+      <a-table-column title="Salary" data-index="title"></a-table-column>
+      <a-table-column title="Address" data-index="symbol"></a-table-column>
+      <a-table-column title="Email" data-index="interval"></a-table-column>
+      <a-table-column title="Email" data-index="path"></a-table-column>
+      <a-table-column title="Email" data-index="status"></a-table-column>
       <a-table-column title="Optional">
         <template #cell="{ record }">
-          <a-button @click="runBot(record)">运行</a-button>
-          <a-button @click="closeBot(record)">停止</a-button>
+          <a-button @click="$modal.info({ title:'Name', content:record.title });runBot(record)">运行</a-button>
 
           <a-button @click="deleteR(record)"> 删除</a-button>
 
@@ -59,20 +57,13 @@ const columns = [{
   dataIndex: 'interval',
 }];
 const runBot = (record) => {
-  app.value.RunAlert(record.id).then(res => {
-    console.log(res)
-
-  })
-}
-const closeBot = (record) => {
-  app.value.CloseAlert(record.id).then(res => {
+  app.value.SetAlertStatus(record.id, true).then(res => {
     console.log(res)
 
   })
 }
 const deleteR = (record) => {
-  console.log(record)
-  app.value.DelAlertItem(record.id).then(res => {
+  app.value.DelAlertItem(record).then(res => {
     getData ()
 
   })

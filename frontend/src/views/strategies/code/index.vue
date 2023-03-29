@@ -11,16 +11,16 @@
     >
       <template #first>
         <a-typography-paragraph>
-          <a-space>
-            <a-button type="primary" @click="syncToCloud">同步云端</a-button>
-            <a-button @click="downToLocal">下载本地</a-button>
+<!--          <a-space>-->
+<!--            <a-button type="primary" @click="syncToCloud">同步云端</a-button>-->
+<!--            <a-button @click="downToLocal">下载本地</a-button>-->
 
-          </a-space>
-          <a-button type="primary" @click="openAddForm">
-            <template #icon>
-              <icon-plus />
-            </template>
-          </a-button>
+<!--          </a-space>-->
+<!--          <a-button type="primary" @click="openAddForm">-->
+<!--            <template #icon>-->
+<!--              <icon-plus />-->
+<!--            </template>-->
+<!--          </a-button>-->
           <a-menu
               :style="{ width: '200px', height: '100%' }"
               :default-open-keys="['0']"
@@ -42,20 +42,20 @@
           <a-split direction="horizontal" :style="{height: '100%'}"  v-model:size="size2">
             <template #first>
               <a-layout style="height: 100%;">
-                <a-layout-header> <a-space>
+<!--                <a-layout-header> <a-space>-->
 
-                  <a-button type="primary" @click="newNote">
-                    <template #icon>
-                      <icon-plus />
-                    </template>
-                  </a-button>
-                  <a-button type="primary" @click="removeNote">
-                    <template #icon>
-                      <icon-minus />
-                    </template>
-                  </a-button>
+<!--                  <a-button type="primary" @click="newNote">-->
+<!--                    <template #icon>-->
+<!--                      <icon-plus />-->
+<!--                    </template>-->
+<!--                  </a-button>-->
+<!--                  <a-button type="primary" @click="removeNote">-->
+<!--                    <template #icon>-->
+<!--                      <icon-minus />-->
+<!--                    </template>-->
+<!--                  </a-button>-->
 
-                </a-space></a-layout-header>
+<!--                </a-space></a-layout-header>-->
                 <a-layout-content> <a-menu
                     :style="{ width: '200px', height: '100%' }"
                     :default-open-keys="[]"
@@ -131,8 +131,8 @@ const newNotebookName = ref()
 const showMdEditor = ref(false)
 const notEditedMdtext = ref()
 const newNoteMdFileName = ref()
-const size=ref(0.2)
-const size2=ref(0.2)
+const size=ref(0.15)
+const size2=ref(0.15)
 
 const code = ref('// some code...')
 
@@ -282,6 +282,7 @@ const handleChange =()=>{
 }
 // 保存文章/笔记
 const saveMdText = ( ) => {
+  return 
   // console.log(MdText);
   // console.log(html);
   if (!mdTitle.value) {    //没有标题

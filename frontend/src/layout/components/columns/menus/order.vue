@@ -1,54 +1,48 @@
 <template>
+  <a-layout>
+    <div class="menu-title flex items-center">
+      <a-space>
+        <a-button >当前价格</a-button>
+      </a-space>
+    </div>
+    <a-layout>
+      <a-layout-sider :resize-directions="['bottom']" style="width: 100%">
+        <a-list :max-height="280"  style="height: 280px"   :scrollbar="scrollbar">
+          <a-list-item v-for="(item,index) in asksData" :key="index">{{ item[0] }} </a-list-item>
+        </a-list>
+      </a-layout-sider>
+    </a-layout>
+    <a-layout-footer>  <a-card>
+      <a-tabs type="rounded">
+        <a-tab-pane key="open" title="开仓">
+          <open-order/>
+        </a-tab-pane>
+        <a-tab-pane key="close" title="平仓">
+          <close-order/>
+        </a-tab-pane>
+        <a-tab-pane key="limitstop" title="止赢止损">
+          <pending-order/>
+        </a-tab-pane>
+      </a-tabs>
+    </a-card>
+    </a-layout-footer>
+  </a-layout>
 
-  <div>
-
-          <Indicator/>
-
-
-  </div>
 
 
 </template>
 
 <script setup>
-
-
-
-import {ref, reactive, watchEffect, onMounted, onUnmounted} from 'vue'
-
-import {useDocStore} from '@/store'
-
-import { emitter } from '@/utils/bus.js'
-
-import Indicator from "./components/Indicator.vue";
+import CloseOrder from './closeorder.vue'
+import OpenOrder from './openOrder.vue'
+import PendingOrder from './pendingOrder.vue'
+import {onMounted, onUnmounted, reactive, ref, watchEffect} from "vue";
 import {useWebSocket} from "v3hooks";
-const splitSize=ref({})
-splitSize.value=0.7
-
-const docStore = useDocStore()
-
-
-const columns =reactive( [
-  {
-    title: 'Price',
-    dataIndex: 'Price',
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'Amount',
-  },
-  {
-    title: 'Total',
-    dataIndex: 'Total',
-  },
-
-]);
-
+import {emitter} from "@/utils/bus";
 const options = reactive({
   symbol: "ETHUSDT",
   interval: "1m",
 })
-
 const scrollbar = ref(true);
 const bids=ref()
 const asksData=ref([])
@@ -106,12 +100,10 @@ const getAppInfo =   () => {
 
   })
 }
-
-
 const initPage = () => {
   // 全局监听 关闭当前页面函数
-  emitter.on('symbolChange', (symbol) => {
-    options.symbol=symbol
+  emitter.on('symbolChange', (data) => {
+    options.symbol=data.symbol
     getAppInfo()
   })
   getAppInfo()
@@ -123,6 +115,8 @@ onUnmounted(() => {
   emitter.off('symbolChange')
 
 })
-
 </script>
 
+<style scoped>
+
+</style>

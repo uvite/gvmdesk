@@ -74,10 +74,10 @@ type Launcher struct {
 	flagger feature.Flagger
 
 	kvStore   kv.Store
-	kvService *kv.Service
+	KvService *kv.Service
 	sqlStore  *sqlite.SqlStore
 
-	executor *executor.Executor
+	Executor *executor.Executor
 	reg      *prom.Registry
 	log      *zap.Logger
 
@@ -156,7 +156,7 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 	}
 	//bucketHTTPServer := ts.NewBucketHTTPHandler(m.log, labelSvc)
 
-	m.kvService = kv.NewService(m.log.With(zap.String("store", "kv")), m.kvStore, ts, serviceConfig)
+	m.KvService = kv.NewService(m.log.With(zap.String("store", "kv")), m.kvStore, ts, serviceConfig)
 
 	var taskSvc taskmodel.TaskService
 	{
@@ -164,7 +164,7 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 
 		combinedTaskService := NewAnalyticalStorage(
 			m.log.With(zap.String("service", "task-analytical-store")),
-			m.kvService,
+			m.KvService,
 		)
 
 		executor := executor.NewExecutor(
@@ -178,7 +178,7 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 		if err != nil {
 			m.log.Fatal("could not load existing scheduled runs", zap.Error(err))
 		}
-		m.executor = executor
+		m.Executor = executor
 	}
 	fmt.Println(333)
 	m.TSC = taskSvc

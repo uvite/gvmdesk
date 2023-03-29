@@ -27,7 +27,18 @@ const homePageRoutes = [
       type: 'M',
     },
     component: () => import('@/views/userCenter/message.vue'),
-  }
+  },
+ {
+   name: 'code',
+       path: '/strategies',
+     meta: {
+   title: '策略源码',
+       icon: 'icon-dashboard',
+       type: 'M',
+       affix: true
+ },
+   component: () => import('@/views/strategies/code/index.vue'),
+ }
 ]
 
 export const homePage = {

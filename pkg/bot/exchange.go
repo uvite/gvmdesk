@@ -16,6 +16,10 @@ type SymbolInterval struct {
 }
 
 var SymbolIntervals = []SymbolInterval{}
+var (
+	Symbols   = []string{"BTCUSDT", "ETHUSDT", "BNBUSDT", "BCCUSDT", "NEOUSDT", "LTCUSDT", "QTUMUSDT", "ADAUSDT", "XRPUSDT", "EOSUSDT"}
+	Intervals = []string{"1m", "3m", "5m", "15m", "30m", "1h", "4h", "8h", "1d"}
+)
 
 // Launcher represents the main program execution.
 type Exbot struct {
@@ -59,14 +63,13 @@ func (eb *Exbot) InitExchange() {
 }
 
 func (eb *Exbot) Subscript() {
-	symbols := []string{"BTCUSDT", "ETHUSDT", "BNBUSDT", "BCCUSDT", "NEOUSDT", "LTCUSDT", "QTUMUSDT", "ADAUSDT", "XRPUSDT", "EOSUSDT"}
-	//	"TUSDUSDT", "IOTAUSDT", "XLMUSDT", "ONTUSDT", "TRXUSDT", "ETCUSDT", "ICXUSDT", "VENUSDT", "NULSUSDT", "VETUSDT"}
-	intervals := []string{"1m", "3m", "5m", "15m", "30m", "1h", "4h", "8h", "1d"}
+	//symbols := []string{"BTCUSDT", "ETHUSDT", "BNBUSDT", "BCCUSDT", "NEOUSDT", "LTCUSDT", "QTUMUSDT", "ADAUSDT", "XRPUSDT", "EOSUSDT"}
+	////	"TUSDUSDT", "IOTAUSDT", "XLMUSDT", "ONTUSDT", "TRXUSDT", "ETCUSDT", "ICXUSDT", "VENUSDT", "NULSUSDT", "VETUSDT"}
+	//intervals := []string{"1m", "3m", "5m", "15m", "30m", "1h", "4h", "8h", "1d"}
 
-	for _, symbol := range symbols {
-		for _, interval := range intervals {
+	for _, symbol := range  Symbols {
+		for _, interval := range  Intervals {
 			eb.AddSymbolInterval(symbol, interval)
-
 		}
 		//fmt.Println(k)
 		//app.AddSymbolInterval(k, "1m")

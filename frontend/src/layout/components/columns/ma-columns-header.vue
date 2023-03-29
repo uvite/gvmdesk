@@ -7,7 +7,7 @@
       <ma-breadcrumb />
       <ma-operation />
     </div>
-    <ma-tags class="hidden lg:flex" />
+<!--    <ma-tags class="hidden lg:flex" />-->
   </a-layout-header>
 </template>
 

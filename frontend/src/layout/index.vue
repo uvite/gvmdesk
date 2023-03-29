@@ -2,9 +2,8 @@
 
 <template>
   <a-layout-content class="h-full main-container">
-    <columns-layout v-if="appStore.layout === 'columns'" />
-    <classic-layout v-if="appStore.layout === 'classic'" />
-    <banner-layout v-if="appStore.layout === 'banner'" />
+    <columns-layout   />
+
 
     <ma-button-menu />
   </a-layout-content>

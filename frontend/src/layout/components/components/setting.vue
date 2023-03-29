@@ -10,67 +10,23 @@
     @cancel="close"
     unmountOnClose
   >
-    <template #title>{{ $t('sys.backendSettingTitle') }}</template>
+    <template #title>配置</template>
     <a-form :model="form" :auto-label-width="true">
-      <a-row class="flex justify-center mb-5">
-        <a-divider orientation="center"><span class="title">{{ $t('sys.systemPrimaryColor') }}</span></a-divider>
-        <ColorPicker
-          theme="dark"
-          :color="appStore.color"
-          :sucker-hide="true"
-          :colors-default="defaultColorList"
-          @changeColor="changeColor"
-          style="width: 218px;"
-        />
-      </a-row>
-      <a-divider orientation="center"><span class="title">{{ $t('sys.personalizedConfig') }}</span></a-divider>
-      <a-form-item :label="$t('sys.skin')" :help="$t('sys.skinHelp')">
-        {{ currentSkin }}
-        <a-button type="primary" status="success" size="mini" class="ml-2" @click="skin.open()">
-          {{ $t('sys.changeSkin')}}
-        </a-button>
-      </a-form-item>
-      <a-form-item :label="$t('sys.layouts')" :help="$t('sys.layoutsHelp')">
+
+
+      <a-form-item :label="交易所"  >
         <a-select v-model="form.layout" @change="handleLayout">
-          <a-option value="classic">{{ $t('sys.layout.classic') }}</a-option>
-          <a-option value="columns">{{ $t('sys.layout.columns') }}</a-option>
-          <a-option value="banner">{{ $t('sys.layout.banner') }}</a-option>
+          <a-option value="binace">Binance</a-option>
+          <a-option value="okex">Okex</a-option>
+
         </a-select>
       </a-form-item>
-      <a-form-item :label="$t('sys.i18n')" :help="$t('sys.i18nHelp')">
-        <a-switch v-model="form.i18n" @change="handleI18n" />
-      </a-form-item>
-      <a-form-item :label="$t('sys.language')" :help="$t('sys.languageHelp')" v-if="form.i18n">
-        <a-select v-model="form.language" @change="handleLanguage">
-          <a-option value="zh_CN">{{ $t('sys.chinese') }}</a-option>
-          <a-option value="en">{{ $t('sys.english') }}</a-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('sys.animation')" :help="$t('sys.animationHelp')">
-        <a-select v-model="form.animation" @change="handleAnimation">
-          <a-option value="ma-fade">{{ $t('sys.animate.fade') }}</a-option>
-          <a-option value="ma-slide-left">{{ $t('sys.animate.sliderLeft') }}</a-option>
-          <a-option value="ma-slide-right">{{ $t('sys.animate.sliderRight') }}</a-option>
-          <a-option value="ma-slide-down">{{ $t('sys.animate.sliderDown') }}</a-option>
-          <a-option value="ma-slide-up">{{ $t('sys.animate.sliderUp') }}</a-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('sys.dark')" :help="$t('sys.darkHelp')" v-if="currentSkin === 'Mine'">
-        <a-switch v-model="form.mode" @change="handleSettingMode" />
-      </a-form-item>
-      <a-form-item :label="$t('sys.tag')" :help="$t('sys.tagHelp')">
-        <a-switch v-model="form.tag" @change="handleSettingTag" />
-      </a-form-item>
-      <a-form-item v-if="form.layout !== 'banner'" :label="$t('sys.menuFold')" :help="$t('sys.menuFoldHelp')">
-        <a-switch v-model="form.menuCollapse" @change="handleMenuCollapse" />
-      </a-form-item>
-      <a-form-item v-if="form.layout !== 'banner'" :label="$t('sys.menuWidth')" :help="$t('sys.menuWidthHelp')">
-        <a-input-number v-model="form.menuWidth" mode="button" @change="handleMenuWidth" />
-      </a-form-item>
+
+
     </a-form>
   </a-drawer>
 
-  <Skin ref="skin" />
+
 </template>
 
 <script setup>
