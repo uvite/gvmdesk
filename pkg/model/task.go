@@ -145,6 +145,11 @@ type TaskService interface {
 
 // TaskCreate is the set of values to create a task.
 type TaskCreate struct {
+	Content         string                 `json:"content"`  // 内容
+	Path            string                 `json:"path"`     // 内容
+	Symbol          string                 `json:"symbol"`   // 标签
+	Interval        string                 `json:"interval"` // 标签
+
 	Type           string                 `json:"type,omitempty"`
 	Flux           string                 `json:"flux"`
 	Description    string                 `json:"description,omitempty"`

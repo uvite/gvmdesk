@@ -6,46 +6,36 @@ import (
 	"github.com/influxdata/influxdb/v2"
 	log "github.com/sirupsen/logrus"
 	taskmodel "github.com/uvite/gvmdesk/pkg/model"
+	"github.com/uvite/gvmdesk/pkg/platform"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 // GetById Find by id structure
 type GetById struct {
 	ID uint64 `json:"id" form:"id"`
 }
+type ResponseInfo struct {
+	List  interface{} `json:"list"`
+	Total int         `json:"total" form:"total"` // 页码
+
+}
 
 func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 
-	router.POST("/api/task", func(c *gin.Context) {
-		time.Sleep(5 * time.Second)
-		c.String(http.StatusOK, "Welcome Gin Server")
-	})
-	router.GET("/api/task", func(c *gin.Context) {
-		//var info GetById
-		//err := c.ShouldBindJSON(&info)
-		//fmt.Println(info, err)
+	router.GET("/api/addtask", func(c *gin.Context) {
 
-		idq := c.Query("id")
-
-		id, err := strconv.ParseInt(idq, 10, 64)
-		fmt.Println(id)
-		a := taskmodel.TaskCreate{
-			Flux: `option task = {name: "a task",every: 1h} from(bucket:"test") |> range(start:-1h)`,
-
-			Status: string(taskmodel.TaskActive),
-		}
-		fmt.Println("[2]", a)
-
-		Org := influxdb.Organization{Name: "genv-org", ID: 1}
-
-		fmt.Printf("[org]%+v", Org)
+		//orgId,_:=platform.IDFromString("7654")
+		Org := influxdb.Organization{Name: "genv-org", ID: (7654)}
+		data := map[string]interface{}{}
+		data["symbol"] = "ETHUSDT"
+		data["interval"] = "1m"
+		data["path"] = string("/hein/gvmdesk/js/4.js")
 		task, err := m.kvService.CreateTask(c, taskmodel.TaskCreate{
-			Flux:           `option task = {name: "a task",every: 1h} from(bucket:"test") |> range(start:-1h)`,
-			OrganizationID: 1,
-			OwnerID:        1,
+			OrganizationID: platform.ID(Org.ID),
+			OwnerID:        platform.ID(Org.ID),
 			Status:         string(taskmodel.TaskActive),
+			Flux:           `234234`,
+			Metadata:       data,
 		})
 		if err != nil {
 			fmt.Println(err)
@@ -55,6 +45,90 @@ func (m *Launcher) runHTTP(opts *InfluxdOpts, router *gin.Engine) error {
 			FailWithMessage("获取失败", c)
 		}
 		OkWithDetailed(task, "获取成功", c)
+	})
+	router.GET("/api/task", func(c *gin.Context) {
+
+		id := c.Query("id")
+
+		pid, _ := platform.IDFromString(id)
+		task, err := m.kvService.FindTaskByID(c, *pid)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if err != nil {
+			FailWithMessage("获取失败", c)
+		}
+		OkWithDetailed(task, "获取成功", c)
+	})
+
+	router.GET("/api/close", func(c *gin.Context) {
+
+		id := c.Query("id")
+
+		pid, _ := platform.IDFromString(id)
+		err := m.executor.Close(c, *pid)
+		fmt.Println(err)
+		if err != nil {
+			FailWithMessage("获取失败", c)
+		}
+		OkWithDetailed("task", "获取成功", c)
+	})
+
+	router.GET("/api/cancel", func(c *gin.Context) {
+
+		id := c.Query("id")
+
+		pid, _ := platform.IDFromString(id)
+		err := m.executor.Cancel(c, *pid)
+		fmt.Println(err)
+		if err != nil {
+			FailWithMessage("获取失败", c)
+		}
+		OkWithDetailed("task", "获取成功", c)
+	})
+
+	router.GET("/api/start", func(c *gin.Context) {
+		symbol := c.Query("symbol")
+		Org := influxdb.Organization{Name: "genv-org", ID: (7654)}
+		data := map[string]interface{}{}
+		data["symbol"] = symbol
+		data["interval"] = "1m"
+		data["path"] = string("/hein/gvmdesk/js/4.js")
+		task, err := m.kvService.CreateTask(c, taskmodel.TaskCreate{
+			OrganizationID: platform.ID(Org.ID),
+			OwnerID:        platform.ID(Org.ID),
+			Status:         string(taskmodel.TaskActive),
+			Flux:           `234234`,
+			Metadata:       data,
+			Symbol:         symbol,
+		})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		promise, err := m.executor.PromisedExecute(c, task.ID)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(promise)
+		if err != nil {
+			FailWithMessage("获取失败", c)
+		}
+		OkWithDetailed(task, "获取成功", c)
+	})
+
+	router.GET("/api/all", func(c *gin.Context) {
+		filter := taskmodel.TaskFilter{}
+		task, total, err := m.kvService.FindTasks(c, filter)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if err != nil {
+			FailWithMessage("获取失败", c)
+		}
+		OkWithDetailed(ResponseInfo{List: task, Total: total}, "获取成功", c)
 	})
 
 	srv := &http.Server{

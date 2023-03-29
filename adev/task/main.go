@@ -4,17 +4,24 @@ import (
 	"context"
 	"fmt"
 	"github.com/influxdata/influxdb/v2/kit/signals"
+	"github.com/uvite/gvmdesk/pkg/bot"
 	"github.com/uvite/gvmdesk/pkg/launcher"
 	"time"
 )
 
 func vm() error {
-	fmt.Println(2)
+
 	l := launcher.NewLauncher()
-	fmt.Println(3)
+
 	ctx := context.Background()
 	o := launcher.NewOpts()
-	fmt.Printf("%+v", o)
+
+	fmt.Println(o)
+	eb := bot.NewExbot(ctx)
+
+	eb.InitExchange()
+	eb.Subscript()
+	l.Exbot = eb
 
 	// Start the launcher and wait for it to exit on SIGINT or SIGTERM.
 	if err := l.Run(signals.WithStandardSignals(ctx), o); err != nil {
@@ -29,7 +36,7 @@ func vm() error {
 	return l.Shutdown(shutdownCtx)
 }
 func main() {
-	fmt.Println(1)
+
 	vm()
 	//log := zap.NewNop()
 	//

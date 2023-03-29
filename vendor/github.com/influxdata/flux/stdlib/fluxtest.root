@@ -1,9 +1,0 @@
-{
-    "name": "flux",
-    "tags": [
-        "integration_injection",
-        "integration_write",
-        "integration_read",
-        "skip"
-    ]
-}

@@ -4,8 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	platform "github.com/influxdata/influxdb/v2"
 	"github.com/influxdata/influxdb/v2/http"
+	sqliteMigrations "github.com/influxdata/influxdb/v2/sqlite/migrations"
 	"github.com/uvite/gvmdesk/pkg/bolt"
+	"github.com/uvite/gvmdesk/pkg/bot"
+	"github.com/uvite/gvmdesk/pkg/kv/migration"
+	"github.com/uvite/gvmdesk/pkg/kv/migration/all"
 
 	taskmodel "github.com/uvite/gvmdesk/pkg/model"
 	nethttp "net/http"
@@ -25,7 +30,7 @@ import (
 	"github.com/influxdata/influxdb/v2/snowflake"
 	"github.com/influxdata/influxdb/v2/sqlite"
 	"github.com/influxdata/influxdb/v2/task/backend/scheduler"
-	"github.com/uvite/gvmdesk/pkg/task"
+	"github.com/uvite/gvmdesk/pkg/executor"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -72,15 +77,14 @@ type Launcher struct {
 	kvService *kv.Service
 	sqlStore  *sqlite.SqlStore
 
-	executor *task.Executor
+	executor *executor.Executor
 	reg      *prom.Registry
 	log      *zap.Logger
 
 	httpPort int
 
-
-
-	TSC  taskmodel.TaskService
+	TSC   taskmodel.TaskService
+	Exbot *bot.Exbot
 }
 
 type stoppingScheduler interface {
@@ -136,7 +140,7 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 	m.doneChan = ctx.Done()
 
 	m.initTracing(opts)
-	fmt.Println(opts)
+	//fmt.Println(opts)
 	// Open KV and SQL stores.
 	procID, err := m.openMetaStores(ctx, opts)
 	if err != nil {
@@ -163,19 +167,21 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 			m.kvService,
 		)
 
-		executor := task.NewExecutor(
+		executor := executor.NewExecutor(
 			m.log.With(zap.String("service", "task-executor")),
 
 			combinedTaskService,
+			m.Exbot,
 		)
 		err = executor.LoadExistingScheduleRuns(ctx)
+		fmt.Println(444, err)
 		if err != nil {
 			m.log.Fatal("could not load existing scheduled runs", zap.Error(err))
 		}
 		m.executor = executor
 	}
-	m.TSC=taskSvc
-
+	fmt.Println(333)
+	m.TSC = taskSvc
 
 	//errorHandler := kithttp.NewErrorHandler(m.log.With(zap.String("handler", "error_logger")))
 	Router := gin.Default()
@@ -183,7 +189,6 @@ func (m *Launcher) Run(ctx context.Context, opts *InfluxdOpts) (err error) {
 		time.Sleep(5 * time.Second)
 		c.String(nethttp.StatusOK, "Welcome Gin Server")
 	})
-
 
 	if err := m.runHTTP(opts, Router); err != nil {
 		return err
@@ -291,23 +296,34 @@ func (m *Launcher) openMetaStores(ctx context.Context, opts *InfluxdOpts) (strin
 		m.log.Error("Failed to initialize kv migrator", zap.Error(err))
 		return "", err
 	}
-	//sqlMigrator := sqlite.NewMigrator(sqlStore, m.log.With(zap.String("service", "SQL migrations")))
-	//
-	//// If we're migrating a persistent data store, take a backup of the pre-migration state for rollback.
-	//if opts.StoreType == DiskStore || opts.StoreType == BoltStore {
-	//	backupPattern := "%s.pre-%s-upgrade.backup"
-	//	info := platform.GetBuildInfo()
-	//	kvMigrator.SetBackupPath(fmt.Sprintf(backupPattern, opts.BoltPath, info.Version))
-	//	sqlMigrator.SetBackupPath(fmt.Sprintf(backupPattern, opts.SqLitePath, info.Version))
-	//}
-	//if err := kvMigrator.Up(ctx); err != nil {
-	//	m.log.Error("Failed to apply KV migrations", zap.Error(err))
-	//	return "", err
-	//}
-	//if err := sqlMigrator.Up(ctx, sqliteMigrations.AllUp); err != nil {
-	//	m.log.Error("Failed to apply SQL migrations", zap.Error(err))
-	//	return "", err
-	//}
+
+	// Apply migrations to the KV and SQL metadata stores.
+	kvMigrator, err := migration.NewMigrator(
+		m.log.With(zap.String("service", "KV migrations")),
+		kvStore,
+		all.Migrations[:]...,
+	)
+	if err != nil {
+		m.log.Error("Failed to initialize kv migrator", zap.Error(err))
+		return "", err
+	}
+	sqlMigrator := sqlite.NewMigrator(sqlStore, m.log.With(zap.String("service", "SQL migrations")))
+
+	// If we're migrating a persistent data store, take a backup of the pre-migration state for rollback.
+	if opts.StoreType == DiskStore || opts.StoreType == BoltStore {
+		backupPattern := "%s.pre-%s-upgrade.backup"
+		info := platform.GetBuildInfo()
+		kvMigrator.SetBackupPath(fmt.Sprintf(backupPattern, opts.BoltPath, info.Version))
+		sqlMigrator.SetBackupPath(fmt.Sprintf(backupPattern, opts.SqLitePath, info.Version))
+	}
+	if err := kvMigrator.Up(ctx); err != nil {
+		m.log.Error("Failed to apply KV migrations", zap.Error(err))
+		return "", err
+	}
+	if err := sqlMigrator.Up(ctx, sqliteMigrations.AllUp); err != nil {
+		m.log.Error("Failed to apply SQL migrations", zap.Error(err))
+		return "", err
+	}
 
 	m.kvStore = kvStore
 	m.sqlStore = sqlStore

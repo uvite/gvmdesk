@@ -45,6 +45,10 @@ type matchableTask interface {
 
 type basicKvTask struct {
 	ID              platform.ID       `json:"id"`
+	Content         string            `json:"content"`            // 内容
+	Path            string            `json:"path,omitempty"`     // 内容
+	Symbol          string            `json:"symbol,omitempty"`   // 标签
+	Interval        string            `json:"interval,omitempty"` // 标签
 	Type            string            `json:"type,omitempty"`
 	OrganizationID  platform.ID       `json:"orgID"`
 	OwnerID         platform.ID       `json:"ownerID"`
@@ -184,6 +188,7 @@ func (s *Service) FindTasks(ctx context.Context, filter taskmodel.TaskFilter) ([
 	var ts []*taskmodel.Task
 	err := s.kv.View(ctx, func(tx Tx) error {
 		tasks, _, err := s.findTasks(ctx, tx, filter)
+		fmt.Println("[tasks]", tasks)
 		if err != nil {
 			return err
 		}
@@ -458,9 +463,8 @@ func (s *Service) CreateTask(ctx context.Context, tc taskmodel.TaskCreate) (*tas
 	var t *taskmodel.Task
 	err := s.kv.Update(ctx, func(tx Tx) error {
 
-		fmt.Println("[222]", tc)
 		task, err := s.createTask(ctx, tx, tc)
-		fmt.Println("[3333]", err)
+
 		if err != nil {
 			return err
 		}
@@ -472,11 +476,6 @@ func (s *Service) CreateTask(ctx context.Context, tc taskmodel.TaskCreate) (*tas
 }
 
 func (s *Service) createTask(ctx context.Context, tx Tx, tc taskmodel.TaskCreate) (*taskmodel.Task, error) {
-	// TODO: Uncomment this once the checks/notifications no longer create tasks in kv
-	// confirm the owner is a real user.
-	// if _, err = s.findUserByID(ctx, tx, tc.OwnerID); err != nil {
-	// 	return nil, influxdb.ErrInvalidOwnerID
-	// }
 
 	if tc.Status == "" {
 		tc.Status = string(taskmodel.TaskActive)
@@ -484,8 +483,12 @@ func (s *Service) createTask(ctx context.Context, tx Tx, tc taskmodel.TaskCreate
 
 	createdAt := s.clock.Now().Truncate(time.Second).UTC()
 	task := &taskmodel.Task{
-		ID:   s.IDGenerator.ID(),
-		Type: tc.Type,
+		ID:       s.IDGenerator.ID(),
+		Type:     tc.Type,
+		Symbol:   tc.Symbol,
+		Content:  tc.Content,
+		Interval: tc.Interval,
+		Path:     tc.Path,
 
 		OwnerID:  tc.OwnerID,
 		Metadata: tc.Metadata,
@@ -498,42 +501,47 @@ func (s *Service) createTask(ctx context.Context, tx Tx, tc taskmodel.TaskCreate
 		LatestCompleted: createdAt,
 		LatestScheduled: createdAt,
 	}
-	fmt.Println("[555]", 444)
+	task.OrganizationID = 1
+	task.OwnerID = 1
+
+	fmt.Printf("creat task %+v", task)
+
 	taskBucket, err := tx.Bucket(taskBucket)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
-	fmt.Println("[66]", 444)
+
 	indexBucket, err := tx.Bucket(taskIndexBucket)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
-	fmt.Println("[77]", 444)
 
 	fmt.Printf("%+v", task)
 	taskBytes, err := json.Marshal(task)
-	fmt.Println("[77]33", err)
+
 	if err != nil {
 		return nil, taskmodel.ErrInternalTaskServiceError(err)
 	}
-	fmt.Println("[8877]", 444)
+
 	taskKey, err := taskKey(task.ID)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("[88]", 444)
+
 	orgKey, err := taskOrgKey(task.OrganizationID, task.ID)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("[8]", 444)
 
 	// write the task
 	err = taskBucket.Put(taskKey, taskBytes)
 	if err != nil {
 		return nil, taskmodel.ErrUnexpectedTaskBucketErr(err)
 	}
-	fmt.Println("[99]", 444)
+	v := &taskmodel.Task{}
+	a := json.Unmarshal(taskBytes, v)
+	fmt.Println("re back", a)
+
 	// write the org index
 	err = indexBucket.Put(orgKey, taskKey)
 	if err != nil {
